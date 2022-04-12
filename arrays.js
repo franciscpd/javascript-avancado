@@ -1,4 +1,4 @@
-const arrayBase = [
+const pessoas = [
   {
     _id: "6254a5266c92229bd97d0384",
     isActive: true,
@@ -215,3 +215,67 @@ const arrayBase = [
   },
 ];
 // Arrays methods
+
+// const arrayDiversos = [
+//   1, //0
+//   2, //1
+//   3, //2
+//   4, //3
+//   5, //4
+//   "Francis", //5
+//   "Taii", //6
+//   { marca: "fiat", modelo: "Uno" }, //7
+//   ["azul", "amarelo"], //8
+// ];
+
+// for (let i = 0; i < pessoas.length; i++) {
+//   const pessoa = pessoas[i];
+
+//   console.log(`${i} - ${pessoa.name}`);
+// }
+
+// Utilizado para percorrer os registros de um array
+// pessoas.forEach((pessoa, index) => {
+//   // console.log(`${index} - ${pessoa.name}`);
+//   // pessoa.tags.forEach((tag) => console.log(tag));
+// });
+
+// Retorna uma nova lista
+// const novaPessoas = pessoas.map((pessoa) => {
+//   return {
+//     nome: pessoa.name,
+//     idade: pessoa.age,
+//     opcao: pessoa.gender,
+//   };
+// });
+
+// console.log(novaPessoas);
+
+// const pessoasAtivas = pessoas.filter((pessoa) => {
+//   return pessoa.isActive;
+// });
+
+// const pessoasInativas = pessoas.filter((pessoa) => {
+//   return !pessoa.isActive;
+// });
+
+// console.log(pessoasAtivas.length);
+// console.log(pessoasInativas.length);
+
+// const pessoasQueMoramNoArizona = pessoas.filter((pessoa) => {
+//   // return pessoa.tags.filter((tag) => tag === "commodo").length > 0;
+//   return pessoa.address.toLowerCase().indexOf("461") != -1;
+// });
+
+// console.log(pessoasQueMoramNoArizona.length);
+
+const indice = pessoas.findIndex((pessoa) => {
+  return pessoa._id === "6254a526a0a33b6b7954879c";
+});
+
+console.log(indice);
+console.log(pessoas.length);
+
+pessoas.splice(indice, 1);
+
+console.log(pessoas.length);

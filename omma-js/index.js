@@ -18,7 +18,7 @@ console.log(nomeEmpresa);
 //  e. instruções de preparo
 //  f. link do video de preparo
 //  g. se é vegana ou não
-let listaDeReceitas = [
+const listaDeReceitas = [
   {
     id: 1,
     titulo: "Cachorro quente",
@@ -66,46 +66,74 @@ const cadastrarReceita = (
 //  a.Titulo da Receita
 //  b.Lista de Ingredientes
 //  c.Se é vegana ou não
-function exibirReceitas() {
-  for (let i = 0; i < listaDeReceitas.length; i++) {
-    const receita = listaDeReceitas[i];
-
+const exibirReceitas = () => {
+  listaDeReceitas.forEach((receita) => {
     console.log("--------------------------------");
     console.log(`Título: ${receita.titulo}`);
 
     console.log("Ingredientes:");
-    for (let j = 0; j < receita.ingredientes.length; j++) {
-      console.log(`- ${receita.ingredientes[j]}`);
-    }
+    receita.ingredientes.forEach((ingrediente) => {
+      console.log(`- ${ingrediente}`);
+    });
 
     console.log("É vegano? ", receita.vegano ? "Sim" : "Não");
     console.log("--------------------------------");
-  }
-}
+  });
+  // for (let i = 0; i < listaDeReceitas.length; i++) {
+  //   const receita = listaDeReceitas[i];
+
+  //   console.log("--------------------------------");
+  //   console.log(`Título: ${receita.titulo}`);
+
+  //   console.log("Ingredientes:");
+  //   for (let j = 0; j < receita.ingredientes.length; j++) {
+  //     console.log(`- ${receita.ingredientes[j]}`);
+  //   }
+
+  //   console.log("É vegano? ", receita.vegano ? "Sim" : "Não");
+  //   console.log("--------------------------------");
+  // }
+};
 
 // Devemos criar uma função que nos permita deletar uma receita, e o nome
 // serádeletarReceita ela irá receber como parâmetroo identificador da
 // receita. Caso o identificador não seja encontrado deve exibir a seguinte
 // mensagem:“Receita não encontrada”. Se a receita forencontrada deve
 // ser deletada da lista e exibir uma mensagem de sucesso no console.
-function deletarReceita(id) {
-  let novaListaDeReceitas = [];
+const deletarReceita = (id) => {
+  const indiceReceita = listaDeReceitas.findIndex((receita) => {
+    return receita.id === id;
+  });
 
-  for (let i = 0; i < listaDeReceitas.length; i++) {
-    const receita = listaDeReceitas[i];
-
-    if (receita.id !== id) {
-      novaListaDeReceitas.push(receita);
-    }
-  }
-
-  if (novaListaDeReceitas.length === listaDeReceitas.length) {
+  if (indiceReceita === -1) {
     return console.log("Receita não encontrada");
   }
 
-  listaDeReceitas = novaListaDeReceitas;
+  listaDeReceitas.splice(indiceReceita, 1);
+
+  // let novaListaDeReceitas = [];
+
+  // for (let i = 0; i < listaDeReceitas.length; i++) {
+  //   const receita = listaDeReceitas[i];
+
+  //   if (receita.id !== id) {
+  //     novaListaDeReceitas.push(receita);
+  //   }
+  // }
+
+  // if (novaListaDeReceitas.length === listaDeReceitas.length) {
+  //   return console.log("Receita não encontrada");
+  // }
+
+  // listaDeReceitas = novaListaDeReceitas;
   console.log("Receita deletada com sucesso!");
-}
+};
+
+const buscarReceita = (termo) => {
+  return listaDeReceitas.filter((receita) => {
+    return receita.titulo.toLowerCase().indexOf(termo) != -1;
+  });
+};
 
 // Cadastra uma nova receita
 cadastrarReceita(
@@ -118,11 +146,13 @@ cadastrarReceita(
   false
 );
 
-// Exibe todas as receitas
-exibirReceitas();
+console.log(buscarReceita("quente"));
 
-// Remove a receita de id 1
-deletarReceita(1);
+// // Exibe todas as receitas
+// exibirReceitas();
 
-// Exibe a nova lista de receitas
-exibirReceitas();
+// // Remove a receita de id 1
+// deletarReceita(1);
+
+// // Exibe a nova lista de receitas
+// exibirReceitas();
