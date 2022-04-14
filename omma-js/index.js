@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 // Precisamos armazenar o nome da empresa, e sempre que for executado o
 // sistema ( Execução do arquivo index.js) deve exibir no console esse nome.
 // Essa informação nunca deve ser alterada durante o uso do sistema.
@@ -18,17 +20,17 @@ console.log(nomeEmpresa);
 //  e. instruções de preparo
 //  f. link do video de preparo
 //  g. se é vegana ou não
-const listaDeReceitas = [
-  {
-    id: 1,
-    titulo: "Cachorro quente",
-    dificuldade: "simples",
-    ingredientes: ["1 pão de leite", "1 salsicha", "1 colher de batata palha"],
-    preparo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    link: "http://youtube.com",
-    vegano: false,
-  },
-];
+// const listaDeReceitas = [
+//   {
+//     id: 1,
+//     titulo: "Cachorro quente",
+//     dificuldade: "simples",
+//     ingredientes: ["1 pão de leite", "1 salsicha", "1 colher de batata palha"],
+//     preparo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+//     link: "http://youtube.com",
+//     vegano: false,
+//   },
+// ];
 
 // Será preciso criar uma função que permita cadastrar uma receita dentro
 // da lista de receitas, seguindo os padrões do objeto estipulado na etapa
@@ -36,7 +38,7 @@ const listaDeReceitas = [
 // cada informação da receita porparâmetro devolverumfeedback no
 // console que o cadastro foi concluído.
 const cadastrarReceita = (
-  id,
+  // id,
   titulo,
   dificuldade,
   ingredientes,
@@ -44,8 +46,13 @@ const cadastrarReceita = (
   link,
   vegano
 ) => {
+  const rawData = fs.readFileSync("data.json");
+  const listaDeReceitas = JSON.parse(rawData);
+
+  const indiceUltimaReceita = listaDeReceitas.length - 1;
+
   const novaReceita = {
-    id,
+    id: listaDeReceitas[indiceUltimaReceita].id + 1,
     titulo,
     dificuldade,
     ingredientes,
@@ -55,6 +62,8 @@ const cadastrarReceita = (
   };
 
   listaDeReceitas.push(novaReceita);
+
+  fs.writeFileSync("data.json", JSON.stringify(listaDeReceitas));
 
   // console.log("Cadastro da receita " + titulo + " feito com sucesso!");
   console.log(`Cadastro da receita ${titulo} feito com sucesso!`);
@@ -68,15 +77,16 @@ const cadastrarReceita = (
 //  c.Se é vegana ou não
 const exibirReceitas = () => {
   listaDeReceitas.forEach((receita) => {
+    const { titulo, ingredientes, vegano } = receita;
     console.log("--------------------------------");
-    console.log(`Título: ${receita.titulo}`);
+    console.log(`Título: ${titulo}`);
 
     console.log("Ingredientes:");
-    receita.ingredientes.forEach((ingrediente) => {
+    ingredientes.forEach((ingrediente) => {
       console.log(`- ${ingrediente}`);
     });
 
-    console.log("É vegano? ", receita.vegano ? "Sim" : "Não");
+    console.log("É vegano? ", vegano ? "Sim" : "Não");
     console.log("--------------------------------");
   });
   // for (let i = 0; i < listaDeReceitas.length; i++) {
@@ -135,10 +145,63 @@ const buscarReceita = (termo) => {
   });
 };
 
+// const atualizarReceita = (id, receitaAtualizada) => {
+//   const indiceReceita = listaDeReceitas.findIndex((receita) => {
+//     return receita.id === id;
+//   });
+
+//   if (indiceReceita === -1) {
+//     return console.log("Receita não encontrada");
+//   }
+
+//   if (receitaAtualizada.titulo) {
+//     listaDeReceitas[indiceReceita].titulo = receitaAtualizada.titulo;
+//   }
+
+//   if (receitaAtualizada.dificuldade) {
+//     listaDeReceitas[indiceReceita].dificuldade = receitaAtualizada.dificuldade;
+//   }
+
+//   if (receitaAtualizada.link) {
+//     listaDeReceitas[indiceReceita].link = receitaAtualizada.link;
+//   }
+
+//   if (receitaAtualizada.preparo) {
+//     listaDeReceitas[indiceReceita].preparo = receitaAtualizada.preparo;
+//   }
+
+//   if (receitaAtualizada.ingredientes) {
+//     listaDeReceitas[indiceReceita].ingredientes =
+//       receitaAtualizada.ingredientes;
+//   }
+
+//   if (receitaAtualizada.vegano != null) {
+//     listaDeReceitas[indiceReceita].vegano = receitaAtualizada.vegano;
+//   }
+
+//   console.log(`Receita "${receitaAtualizada.titulo}" atualizada com sucesso!`);
+// };
+
+const atualizarReceita = (id, receitaAtualizada = {}) => {
+  const indiceReceita = listaDeReceitas.findIndex((receita) => {
+    return receita.id === id;
+  });
+
+  if (indiceReceita === -1) {
+    return console.log("Receita não encontrada");
+  }
+
+  listaDeReceitas[indiceReceita] = {
+    ...listaDeReceitas[indiceReceita],
+    ...receitaAtualizada,
+  };
+
+  console.log(`Receita "${receitaAtualizada.titulo}" atualizada com sucesso!`);
+};
+
 // Cadastra uma nova receita
 cadastrarReceita(
-  2,
-  "Ovo frito",
+  "Pipoca",
   "simples",
   ["1 ovo", "1 colher de azeite", "Sal a gosto"],
   "Quebre o ovo em um copo americano, jogue sal, e leve à frigideira.",
@@ -146,10 +209,14 @@ cadastrarReceita(
   false
 );
 
-console.log(buscarReceita("quente"));
+// console.log(buscarReceita("quente"));
 
-// // Exibe todas as receitas
-// exibirReceitas();
+// console.log(listaDeReceitas);
+
+// console.log(atualizarReceita(2, { titulo: "Miojo" }));
+
+// // // Exibe todas as receitas
+// console.log(listaDeReceitas);
 
 // // Remove a receita de id 1
 // deletarReceita(1);
